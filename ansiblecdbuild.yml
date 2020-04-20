@@ -1,0 +1,68 @@
+---
+- name: build docker image
+  connection: local
+  hosts: local
+  become: yes
+  vars: 
+   gitrepo: https://github.com/jobygit/ansible-cd-content.git
+   gitsource: /var/git_source
+   dock_user: jobyzac
+   dock_pass: Canon1200d!
+  tasks:
+
+
+    - name: Install git
+      yum:
+        name: git
+        state: present
+ 
+    - name: Create Git source
+      file:
+        path: "{{ gitsource }}"
+        state: directory
+
+    - name: Clone Git Repo
+      git:
+        repo: "{{ gitrepo }}"
+        dest: "{{ gitsource }}"
+      register: clone_stat
+     
+    - name: "Fetch latest tag from git clone directory"
+      shell: "git describe --tags"
+      args:
+        chdir: "{{ gitsource }}"
+      register: latest_tagname
+    
+    - name: "Installing Docker and pip"
+      yum:
+        name: python-pip
+        state: present
+     
+    - name: "Install Docker engine"
+      yum:
+        name: docker
+        state: present
+
+    - name: "Installing docker-py"
+      pip: name=docker-py
+
+
+    - name: Docker login
+      docker_login:
+        username: dock_user
+        password: dock_pass
+
+    
+    - name: "Building the DockerImage"
+      when: clone_stat.changed
+      docker_image:
+         path: "{{ gitsource }}"
+         name: jobyzac/ansiblecd
+         tag: "{{ item }}"
+         push: yes
+         force: yes
+         state: present   
+      with_items:
+        - latest
+        - "{{ latest_tagname.stdout }}"
+

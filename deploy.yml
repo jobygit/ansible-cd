@@ -1,0 +1,27 @@
+---
+
+ - name: "Creating Container"
+   hosts: aws
+   become: yes
+   tasks:
+
+     - name: "Installing Docker and pip"
+       yum:
+         name: 
+           - python-pip
+           - docker
+         state: present
+     
+
+     - name: "Installing docker-py"
+       pip: name=docker-py
+
+
+     - name: "Running Docker Container"
+       docker_container:
+         name: "webluew"
+         recreate: true
+         pull: yes
+         image: "jobyzac/ansiblecd:latest"
+         published_ports:
+          - "80:80"
