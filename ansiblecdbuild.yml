@@ -10,7 +10,9 @@
    dock_pass: Canon1200d!
   tasks:
 
-
+    - name: debug
+      debug: "HaI Everyone, This is CD project"
+      
     - name: Install git
       yum:
         name: git
