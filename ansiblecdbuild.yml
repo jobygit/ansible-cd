@@ -1,6 +1,5 @@
 ---
 - name: build docker image
-  connection: local
   hosts: localhost
   gather_facts: no
   become: yes
@@ -13,7 +12,7 @@
 
 
     - name: Install git
-      yum3:
+      yum:
         name: git
         state: present
  
@@ -35,12 +34,12 @@
       register: latest_tagname
     
     - name: "Installing Docker and pip"
-      yum3:
+      yum:
         name: python-pip
         state: present
      
     - name: "Install Docker engine"
-      yum3:
+      yum:
         name: docker
         state: present
 
