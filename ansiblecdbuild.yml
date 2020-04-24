@@ -13,7 +13,7 @@
 
 
     - name: Install git
-      yum:
+      yum3:
         name: git
         state: present
  
@@ -35,12 +35,12 @@
       register: latest_tagname
     
     - name: "Installing Docker and pip"
-      yum:
+      yum3:
         name: python-pip
         state: present
      
     - name: "Install Docker engine"
-      yum:
+      yum3:
         name: docker
         state: present
 
