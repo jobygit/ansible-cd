@@ -2,6 +2,7 @@
 - name: build docker image
   connection: local
   hosts: localhost
+  gather_facts: no
   become: yes
   vars: 
    gitrepo: https://github.com/jobygit/ansible-cd-content.git
