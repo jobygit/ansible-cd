@@ -11,7 +11,7 @@
   tasks:
 
     - name: debug
-      debug: "HaI Everyone, This is CD project"
+      debug: msg="HaI Everyone, This is CD project"
       
     - name: Install git
       yum:
